@@ -1,8 +1,8 @@
 """Managers for commands, events and tasks"""
 
-import discord
-import os
 from typing import Dict, List
+import os
+import discord
 
 __all__ = ["CommandManager"]
 
@@ -14,12 +14,16 @@ class CommandManager:
         """Initialize the manager
 
         [Args]:
-            directory (List): A list containing the path for the commands directory
             bot (discord.Client): The client
         """
         self.__bot = bot
 
     def load(self, directory: List) -> None:
+        """Load commands in a directory
+        
+        [Args]:
+            directory (List): A list containing the path for the commands directory
+        """
         files = [
             i
             for i in os.listdir(os.path.join(*directory))
@@ -33,9 +37,16 @@ class CommandManager:
             self.commands[cmd.name] = cmd
 
 
-    async def execute(self, command_name: str, message: discord.Message, arguments: List) -> None:
-        if command_name in self.commands:
-            command = self.commands[command_name](self.__bot, self)
+    async def execute(self, name: str, message: discord.Message, arguments: List) -> None:
+        """Execute a command
+        
+        [Args]:
+            name (str): Name of the command
+            message (discord.Message): Message where the command was executed
+            arguments (List): Arguments for the command
+        """
+        if name in self.commands:
+            command = self.commands[name](self.__bot, self)
             await command.execute(message, arguments)
         else:
-            await message.reply(f"Error: Unknown command: `{command_name}`")
+            await message.reply(f"Error: Unknown command: `{name}`")

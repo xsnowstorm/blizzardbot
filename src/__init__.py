@@ -1,6 +1,8 @@
-import discord
+"""Command, Event and Task blueprints"""
+
 from abc import ABC, abstractmethod
 from typing import List
+import discord
 
 from .logger import Logger
 from .manager import CommandManager
@@ -8,6 +10,7 @@ from .manager import CommandManager
 __all__ = ["Command"]
 
 class Command(ABC):
+    """Blueprint for a command"""
     name = ""
     description = ""
     usage = ""
